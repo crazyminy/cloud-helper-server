@@ -1,0 +1,7 @@
+{
+    "ignore": [".git", "node_modules", ".gitignore","data.json"],
+    "env": {
+      "NODE_ENV": "development"
+    },
+    "ext": "js,json"
+}
