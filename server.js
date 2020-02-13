@@ -85,12 +85,13 @@ app.get("/api/thumbnails",function(req,res){
   res.send(response);
 })
 
-app.get("/api/raw",BodyParser.json(),function(req,res){
-  let thumbnailName = res.body.thumbnailName;
+app.get("/api/raw/:thumbnailNmae",function(req,res){
+  //console.log(req);
+  let thumbnailName = req.params.thumbnailName;
   res.send({
     msg:"success",
     data:{
-      raw:"http://crazyminy/imgs/"+dbHelper.getRawPath(thumbnailName)+".png"
+      raw:"http://crazyminy.cn/imgs/"+dbHelper.getRawPath(thumbnailName)+".png"
     }
   })
 })
