@@ -85,9 +85,10 @@ app.get("/api/thumbnails",function(req,res){
   res.send(response);
 })
 
-app.get("/api/raw/:thumbnailNmae",function(req,res){
+app.get("/api/raw/:thumbnailName",function(req,res){
   //console.log(req);
   let thumbnailName = req.params.thumbnailName;
+  //console.log(thumbnailName);
   res.send({
     msg:"success",
     data:{

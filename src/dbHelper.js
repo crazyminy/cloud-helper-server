@@ -31,7 +31,8 @@ module.exports = function DbHelper(jsonLocation){
     }
 
     this.getRawPath = function(thumbName){
-        db.get("thumb_raw")
+        //console.log(thumbName);
+        return db.get("thumb_raw")
         .get(thumbName)
         .value();
     }
