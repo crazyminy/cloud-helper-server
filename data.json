@@ -1,16 +1,12 @@
 {
-  "posts": [
-    {
-      "id": 1,
-      "title": "lowdb is awesome"
-    },
-    {
-      "id": 2,
-      "title": "lowdb is bad"
-    }
+  "thumbnails": [
+    "50affaa04e4d11ea8ec9f14b96b65ec2",
+    "50b10c114e4d11ea8ec9f14b96b65ec2",
+    "972a94e14e4d11eabd36a9ffd8efe89a"
   ],
-  "user": {
-    "name": "typicode"
-  },
-  "count": 1
+  "thumb_raw": {
+    "50affaa04e4d11ea8ec9f14b96b65ec2": "50afd3904e4d11ea8ec9f14b96b65ec2",
+    "50b10c114e4d11ea8ec9f14b96b65ec2": "50b10c104e4d11ea8ec9f14b96b65ec2",
+    "972a94e14e4d11eabd36a9ffd8efe89a": "972a94e04e4d11eabd36a9ffd8efe89a"
+  }
 }

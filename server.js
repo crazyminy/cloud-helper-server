@@ -1,7 +1,8 @@
 const path = require("path");
 const request = require('request');
+const encoding = require("./src/encoding");
 const multipart = require('connect-multiparty');
-const {saveRaw} = require('./src/fileHelper')
+const {handleFiles} = require('./src/fileHelper')
 const multipart_midlleware = multipart();
 const DbHelper = require('./src/dbHelper');
 
@@ -39,16 +40,36 @@ let allowCors = function(req, res, next) {
 };
 app.use(allowCors);//使用跨域中间件
 
-// let tokenValidate = function(req,res,next){
-//   let Authentication = req.get("Authentication");
-//   console.log("auth"+Authentication);
-//   next();
-// } 
-// app.use("/api/*",tokenValidate);
+let tokenValidate = function(req,res,next){
+  let Authentication = req.get("Authentication");
+  // if(!(Authentication instanceof String)){
+  //   res.send({
+  //     msg:"validate_error"
+  //   })
+  // }
+  console.log(typeof Authentication);
+  let [precode,token] = Authentication.split("&");
+  //console.log(Authentication);
+  if(encoding(precode) === token){
+    next();
+  }else{
+    res.send({
+      msg:"validate_error"
+    })
+  }
+  
+} 
+app.use("/api/*",tokenValidate);
 
 app.post('/apilogin',BodyParser.json(),function(req,res){
   console.log(req.body);
-  res.send({msg:"success"});
+  let now = Date.now();
+  res.setHeader("content-type","application/json");
+  res.send({msg:"success",data:{
+    msg:"success",
+    lastValidateTime:now,
+    token:encoding(now+"salt")
+  }});
 })
 
 
@@ -59,16 +80,22 @@ app.get('/api/helloworld', function (req, res) {
   res.send({msg:"helloworld"})
 })
 
-app.post('/file/upload',multipart_midlleware,function(req,res){
-  //console.log(req.files);
-  let filesNeedToHandle;
+app.get("/api/thumbnails",function(req,res){
+  let response = {data:dbHelper.getAllthumbs(),msg:"success"};
+  res.send(response);
+})
+
+app.post('/api/uploadImg',multipart_midlleware,function(req,res){
+  //console.log(req);
+  let raws,thumbnails;
   if(req.files.file instanceof Array){
-    //console.log(req.files.file,25525532)
-    filesNeedToHandle = req.files.file;
+    raws = req.files.file;
+    thumbnails = req.files.compressedFile;
   }else{
-    filesNeedToHandle = [req.files.file]
+    raws = [req.files.file];
+    thumbnails = [req.files.compressedFile];
   }
-  saveRaw(filesNeedToHandle);
+  handleFiles(raws,thumbnails,dbHelper);
   res.send({msg:"success"});
 })
 

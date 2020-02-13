@@ -1,28 +1,40 @@
 const fs = require("fs");
 const path = require("path");
 const uuidv1 = require('uuid/v1');
-var images = require("images");
-const targetPath = "/Users/crazyminy/Desktop/destination";
-const simDest = "/Users/crazyminy/Desktop/simDest";
+// const targetPath = "C:\\Users\\13983\\Desktop\\imgsTest";
+// const simDest = "C:\\Users\\13983\\Desktop\\imgsTest\\thumbs";
+const targetPath = "/root/imgBed";
+const simDest = "/root/thumbs";
 /**
  * 
  * @param {File[]} files 
  */
-function saveRaw(files) {
+function handleFiles(raws,thumbnails,dbHelper) {
     //console.log(2333,files);
     // files.forEach((file,index)=>{
     //     console.log(path.parse(file.path).ext);
     // })
-    files.forEach(file=>{
-        //先移动文件到目标文件夹
-        let name = uuidv1().replace(/-/g,'')+'.png';
-        let path_raw = path.join(targetPath,name);
-        let path_comp = path.join(simDest,name);
-        fs.renameSync(file.path,path_raw);
-        images(name_raw).size(100).save(path_comp,{quality:60});
-    })
+
+    if(!fs.existsSync(targetPath)){
+        fs.mkdirSync(targetPath);
+    }
+    if(!fs.existsSync(simDest)){
+        fs.mkdirSync(simDest);
+    }
+    for(let i = 0;i<raws.length;i++){
+        let name_r = uuidv1().replace(/-/g,'');
+        let name_t = uuidv1().replace(/-/g,'');
+        let path_raw = path.join(targetPath,name_r);
+        let path_thumb = path.join(simDest,name_t);
+        fs.renameSync(raws[i].path,path_raw,+'.png');
+        fs.renameSync(thumbnails[i].path,path_thumb+'.png');
+        dbHelper.pushNewThumb(name_t);
+        dbHelper.setThumbRawMap(name_t,name_r);
+        
+    }
+    
 }
 
 module.exports = {
-    saveRaw
+    handleFiles
 }

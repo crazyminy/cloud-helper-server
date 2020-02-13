@@ -12,6 +12,21 @@ module.exports = function DbHelper(jsonLocation){
     const db = low(adapter);
 
     this.init = function(){
-        console.log(db.get("posts").value())
+    }
+
+    this.getAllthumbs = function(){
+        return db.get("thumbnails").value();
+    }
+
+    this.setThumbRawMap = function(thumbName,rawName){
+        db.get("thumb_raw")
+        .set(thumbName,rawName)
+        .write();
+    }
+
+    this.pushNewThumb = function(thumbName){
+        db.get("thumbnails")
+        .push(thumbName)
+        .write();
     }
 }
