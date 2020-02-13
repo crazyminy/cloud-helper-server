@@ -29,4 +29,10 @@ module.exports = function DbHelper(jsonLocation){
         .push(thumbName)
         .write();
     }
+
+    this.getRawPath = function(thumbName){
+        db.get("thumb_raw")
+        .get(thumbName)
+        .value();
+    }
 }

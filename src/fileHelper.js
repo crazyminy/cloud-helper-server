@@ -26,7 +26,7 @@ function handleFiles(raws,thumbnails,dbHelper) {
         let name_t = uuidv1().replace(/-/g,'');
         let path_raw = path.join(targetPath,name_r);
         let path_thumb = path.join(simDest,name_t);
-        fs.renameSync(raws[i].path,path_raw,+'.png');
+        fs.renameSync(raws[i].path,path_raw+'.png');
         fs.renameSync(thumbnails[i].path,path_thumb+'.png');
         dbHelper.pushNewThumb(name_t);
         dbHelper.setThumbRawMap(name_t,name_r);

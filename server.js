@@ -62,7 +62,7 @@ let tokenValidate = function(req,res,next){
 app.use("/api/*",tokenValidate);
 
 app.post('/apilogin',BodyParser.json(),function(req,res){
-  console.log(req.body);
+  //console.log(req.body);
   let now = Date.now();
   res.setHeader("content-type","application/json");
   res.send({msg:"success",data:{
@@ -76,13 +76,23 @@ app.post('/apilogin',BodyParser.json(),function(req,res){
 
 // respond with "hello world" when a GET request is made to the homepage
 app.get('/api/helloworld', function (req, res) {
-  console.log(req.get("content-type"));
+  //console.log(req.get("content-type"));
   res.send({msg:"helloworld"})
 })
 
 app.get("/api/thumbnails",function(req,res){
   let response = {data:dbHelper.getAllthumbs(),msg:"success"};
   res.send(response);
+})
+
+app.get("/api/raw",BodyParser.json(),function(req,res){
+  let thumbnailName = res.body.thumbnailName;
+  res.send({
+    msg:"success",
+    data:{
+      raw:"http://crazyminy/imgs/"+dbHelper.getRawPath(thumbnailName)+".png"
+    }
+  })
 })
 
 app.post('/api/uploadImg',multipart_midlleware,function(req,res){
